@@ -12,6 +12,7 @@ opponents = 5;
 
 
 $(".startButton").on("click", function () {
+    var startPressed =true;
     $(this).off('click');
     gameStart();
 });
@@ -22,9 +23,11 @@ $(".restartButton").on("click", function () {
         for (var i = 0; i < gladiatorName.length; i++) {
             $('#' + gladiatorName[i]).remove();
         }
+        
         opponents = 5;
         gameStart();
     }
+    startPressed =false;
 });
 
 
@@ -45,7 +48,7 @@ function gameStart() {
         gladiator.attr({ 'data-hit': charDMG[i] });
         gladiator.attr({ 'data-name': gladiatorName[i] });
         var hpSpan = $('<span>').addClass('gladiatorHP').html(gladiator.data('hp'));
-        gladiator.append(gladiatorName[i],gladiatorPic, hpSpan);
+        gladiator.append(gladiatorName[i], gladiatorPic, hpSpan);
         $('.startBtn').append(gladiator);
     }
 
@@ -62,6 +65,7 @@ function gameStart() {
                 $('#' + gladiatorName[i]).removeClass('gladiatorIMG startStyle').addClass('opponentStyle');
                 $('#' + gladiatorName[i] + ' span').removeClass('gladiatorHP');
                 $('.oppoGladiator').append($('#' + gladiatorName[i]));
+                console.log("Hello")
             }
         }
         chooseGladiator();
@@ -73,7 +77,7 @@ function chooseGladiator() {
     $(document).on('click', '.opponentStyle', function () {
         opponentHP = $(this).data('hp');
         console.log(opponentHP);
-        $(this).removeClass('opponentSyle opponentGladiator').addClass('currentOpponent');
+        $(this).removeClass('opponentSyle oppoGladiator').addClass('currentOpponent');
         $(this).children('span').attr('class', 'enemigoHP');
         $('.chosenOpponent').append($(this));
         //Turns off click for other opponent so that only chosenOpponent appears
@@ -112,19 +116,19 @@ function battleMode() {
 
 }
 
-function winOrLose(){	
-	if (opponentHP <= 0 && (opponents != 0)){
-		$('.messages').html("You've defeated the challenger! Click another gladiator to continue.");
-		var enemy = $('.currentOpponent').data('name');
-		$('#' + enemy).remove();
-		chooseGladiator();
-		opponents--;
-		console.log(opponents);
-	}
-	if ((opponentHP <= 0) && (opponents == 0)){
-		$('.messages').html("Congrats!!! You've destroyed every Challenger! Press 'Restart' to start a new game.");
-	}
-	if (userHP <= 0){
-		$('.messages').html("You lost. You suck... Press 'Restart' to start a new game.");
-	}	
+function winOrLose() {
+    if (opponentHP <= 0 && (opponents != 0)) {
+        $('.messages').html("You've defeated the challenger! Click another gladiator to continue.");
+        var enemy = $('.currentOpponent').data('name');
+        $('#' + enemy).remove();
+        chooseGladiator();
+        opponents--;
+        console.log(opponents);
+    }
+    if ((opponentHP <= 0) && (opponents == 0)) {
+        $('.messages').html("Congrats!!! You've destroyed every Challenger! Press 'Restart' to start a new game.");
+    }
+    if (userHP <= 0) {
+        $('.messages').html("You lost. You suck... Press 'Restart' to start a new game.");
+    }
 }
